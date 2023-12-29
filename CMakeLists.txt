@@ -68,7 +68,7 @@ rclcpp_components_register_node(navigation_action_server PLUGIN "navigation_lite
 
 add_library(controller_action_server SHARED
   src/controller_server.cpp
-  src/conversions.cpp)
+  src/ufomap_ros_msgs_conversions.cpp)
 target_include_directories(controller_action_server PRIVATE
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
@@ -95,7 +95,7 @@ rclcpp_components_register_node(controller_action_server PLUGIN "navigation_lite
 
 add_library(planner_action_server SHARED
   src/planner_server.cpp
-  src/conversions.cpp
+  src/ufomap_ros_msgs_conversions.cpp
   src/d_star_lite.cpp)
 target_include_directories(planner_action_server PRIVATE
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -147,9 +147,8 @@ rclcpp_components_register_node(recovery_action_server PLUGIN "navigation_lite::
 
 add_library(map_publish_server SHARED
   src/map_server.cpp
-  src/sensor.cpp
-  src/sensor_precipitator.cpp 
-  src/conversions.cpp)
+  src/ufomap_ros_conversions.cpp
+  src/ufomap_ros_msgs_conversions.cpp)
 target_include_directories(map_publish_server PRIVATE
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
@@ -173,7 +172,6 @@ target_include_directories(map_publish_server PRIVATE
   $<INSTALL_INTERFACE:include>)
 rclcpp_components_register_node(map_publish_server PLUGIN "navigation_lite::MapServer" EXECUTABLE map_server)
 
-      
 install(TARGETS
   navigation_action_server
   controller_action_server
@@ -188,11 +186,5 @@ install(DIRECTORY
   launch
   DESTINATION share/${PROJECT_NAME}
 )
-
-install(DIRECTORY
-  config
-  DESTINATION share/${PROJECT_NAME}
-)
-
 
 ament_package()

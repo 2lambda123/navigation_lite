@@ -39,8 +39,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef CONVERSIONS_H
-#define CONVERSIONS_H
+#ifndef UFOMAP_ROS_MSGS_CONVERSIONS_H
+#define UFOPAM_ROS_MSGS_CONVERSIONS_H
 
 // UFO
 #include <ufo/geometry/aabb.h>
@@ -74,7 +74,7 @@
 #include <sstream>
 #include <string>
 
-namespace navigation_interfaces
+namespace ufomap_msgs
 {
 //
 // ROS message type to UFO type
@@ -191,6 +191,6 @@ bool ufoToMsg(TreeType const& tree, navigation_interfaces::msg::UfoMap& msg,
   return true;
 }  
 
-}  // namespace navigation_interfaces
+}  // namespace ufomap_msgs
 
-#endif  // CONVERSIONS_H
+#endif  // UFOMAP_ROS_MSGS_CONVERSIONS_H
