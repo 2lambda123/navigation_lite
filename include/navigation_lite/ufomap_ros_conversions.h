@@ -16,8 +16,8 @@
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
- * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
+ * 1. Redistributions of source code must retain the above copyright notice,
+ * this list of conditions and the following disclaimer.
  *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
@@ -29,14 +29,15 @@
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef UFOMAP_ROS_CONVERSIONS_H
@@ -55,53 +56,60 @@
 #include <geometry_msgs/msg/vector3.hpp>
 #include <sensor_msgs/msg/point_cloud2.hpp>
 
-namespace ufomap_ros
-{
+namespace ufomap_ros {
 // Point clouds
-void rosToUfo(sensor_msgs::msg::PointCloud2 const& cloud_in, ufo::map::PointCloud& cloud_out);
+void rosToUfo(sensor_msgs::msg::PointCloud2 const &cloud_in,
+              ufo::map::PointCloud &cloud_out);
 
-void rosToUfo(sensor_msgs::msg::PointCloud2 const& cloud_in,
-              ufo::map::PointCloudColor& cloud_out);
+void rosToUfo(sensor_msgs::msg::PointCloud2 const &cloud_in,
+              ufo::map::PointCloudColor &cloud_out);
 
-void ufoToRos(ufo::map::PointCloud const& cloud_in, sensor_msgs::msg::PointCloud2& cloud_out);
+void ufoToRos(ufo::map::PointCloud const &cloud_in,
+              sensor_msgs::msg::PointCloud2 &cloud_out);
 
-void ufoToRos(ufo::map::PointCloudColor const& cloud_in,
-              sensor_msgs::msg::PointCloud2& cloud_out);
+void ufoToRos(ufo::map::PointCloudColor const &cloud_in,
+              sensor_msgs::msg::PointCloud2 &cloud_out);
 
 // Vector3/Point
-void rosToUfo(geometry_msgs::msg::Point const& point_in, ufo::math::Vector3& point_out);
+void rosToUfo(geometry_msgs::msg::Point const &point_in,
+              ufo::math::Vector3 &point_out);
 
-void rosToUfo(geometry_msgs::msg::Vector3 const& point_in, ufo::math::Vector3& point_out);
+void rosToUfo(geometry_msgs::msg::Vector3 const &point_in,
+              ufo::math::Vector3 &point_out);
 
-ufo::math::Vector3 rosToUfo(geometry_msgs::msg::Point const& point);
+ufo::math::Vector3 rosToUfo(geometry_msgs::msg::Point const &point);
 
-void ufoToRos(ufo::math::Vector3 const& point_in, geometry_msgs::msg::Point& point_out);
+void ufoToRos(ufo::math::Vector3 const &point_in,
+              geometry_msgs::msg::Point &point_out);
 
-void ufoToRos(ufo::math::Vector3 const& point_in, geometry_msgs::msg::Vector3& point_out);
+void ufoToRos(ufo::math::Vector3 const &point_in,
+              geometry_msgs::msg::Vector3 &point_out);
 
-geometry_msgs::msg::Point ufoToRos(ufo::math::Vector3 const& point);
+geometry_msgs::msg::Point ufoToRos(ufo::math::Vector3 const &point);
 
 // Quaternion
-void rosToUfo(geometry_msgs::msg::Quaternion const& quaternion_in,
-              ufo::math::Quaternion& quaternion_out);
+void rosToUfo(geometry_msgs::msg::Quaternion const &quaternion_in,
+              ufo::math::Quaternion &quaternion_out);
 
-ufo::math::Quaternion rosToUfo(const geometry_msgs::msg::Quaternion& quaternion);
+ufo::math::Quaternion
+rosToUfo(const geometry_msgs::msg::Quaternion &quaternion);
 
-void ufoToRos(ufo::math::Quaternion const& quaternion_in,
-              geometry_msgs::msg::Quaternion& quaternion_out);
+void ufoToRos(ufo::math::Quaternion const &quaternion_in,
+              geometry_msgs::msg::Quaternion &quaternion_out);
 
-geometry_msgs::msg::Quaternion ufoToRos(ufo::math::Quaternion const& quaternion);
+geometry_msgs::msg::Quaternion
+ufoToRos(ufo::math::Quaternion const &quaternion);
 
 // Transforms
-void rosToUfo(geometry_msgs::msg::Transform const& transform_in,
-              ufo::math::Pose6& transform_out);
+void rosToUfo(geometry_msgs::msg::Transform const &transform_in,
+              ufo::math::Pose6 &transform_out);
 
-ufo::math::Pose6 rosToUfo(geometry_msgs::msg::Transform const& transform);
+ufo::math::Pose6 rosToUfo(geometry_msgs::msg::Transform const &transform);
 
-void ufoToRos(ufo::math::Pose6 const& transform_in,
-              geometry_msgs::msg::Transform& transform_out);
+void ufoToRos(ufo::math::Pose6 const &transform_in,
+              geometry_msgs::msg::Transform &transform_out);
 
-geometry_msgs::msg::Transform ufoToRos(ufo::math::Pose6 const& transform);
-}  // namespace ufomap_ros
+geometry_msgs::msg::Transform ufoToRos(ufo::math::Pose6 const &transform);
+} // namespace ufomap_ros
 
-#endif  // UFOMAP_ROS_CONVERSIONS_H
+#endif // UFOMAP_ROS_CONVERSIONS_H
