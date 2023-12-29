@@ -51,242 +51,242 @@ namespace ufomap_ros
 void getFields(sensor_msgs::msg::PointCloud2 const& cloud, bool& has_x, bool& has_y,
                bool& has_z, bool& has_rgb)
 {
-  has_x = false;
-  has_y = false;
-  has_z = false;
-  has_rgb = false;
+    has_x = false;
+    has_y = false;
+    has_z = false;
+    has_rgb = false;
 
-  for (auto const& field : cloud.fields) {
-	  if ("x" == field.name) {
-		  has_x = true;
-	  } else if ("y" == field.name) {
-		  has_y = true;
-	  } else if ("z" == field.name) {
-		  has_z = true;
-	  } else if ("rgb" == field.name) {
-		  has_rgb = true;
-	  } else if ("r" == field.name) {
-		  has_rgb = true;
-	  } else if ("g" == field.name) {
-		  has_rgb = true;
-	  } else if ("b" == field.name) {
-	  	has_rgb = true;
-  	}
-  }
+    for (auto const& field : cloud.fields) {
+        if ("x" == field.name) {
+            has_x = true;
+        } else if ("y" == field.name) {
+            has_y = true;
+        } else if ("z" == field.name) {
+            has_z = true;
+        } else if ("rgb" == field.name) {
+            has_rgb = true;
+        } else if ("r" == field.name) {
+            has_rgb = true;
+        } else if ("g" == field.name) {
+            has_rgb = true;
+        } else if ("b" == field.name) {
+            has_rgb = true;
+        }
+    }
 }
 
 void rosToUfo(sensor_msgs::msg::PointCloud2 const& cloud_in, ufo::map::PointCloud& cloud_out)
 {
-	cloud_out.reserve(cloud_in.data.size() / cloud_in.point_step);
+    cloud_out.reserve(cloud_in.data.size() / cloud_in.point_step);
 
-	bool has_x, has_y, has_z, has_rgb;
-	getFields(cloud_in, has_x, has_y, has_z, has_rgb);
+    bool has_x, has_y, has_z, has_rgb;
+    getFields(cloud_in, has_x, has_y, has_z, has_rgb);
 
-	if (!has_x || !has_y || !has_z) {
-		throw std::runtime_error("cloud_in missing one or more of the xyz fields");
-	}
+    if (!has_x || !has_y || !has_z) {
+        throw std::runtime_error("cloud_in missing one or more of the xyz fields");
+    }
 
-	sensor_msgs::PointCloud2ConstIterator<float> iter_x(cloud_in, "x");
-	sensor_msgs::PointCloud2ConstIterator<float> iter_y(cloud_in, "y");
-	sensor_msgs::PointCloud2ConstIterator<float> iter_z(cloud_in, "z");
-	for (; iter_x != iter_x.end(); ++iter_x, ++iter_y, ++iter_z) {
-		if (!std::isnan(*iter_x) && !std::isnan(*iter_y) && !std::isnan(*iter_z)) {
-			cloud_out.push_back(ufo::map::Point3(*iter_x, *iter_y, *iter_z));
-		}
-	}
+    sensor_msgs::PointCloud2ConstIterator<float> iter_x(cloud_in, "x");
+    sensor_msgs::PointCloud2ConstIterator<float> iter_y(cloud_in, "y");
+    sensor_msgs::PointCloud2ConstIterator<float> iter_z(cloud_in, "z");
+    for (; iter_x != iter_x.end(); ++iter_x, ++iter_y, ++iter_z) {
+        if (!std::isnan(*iter_x) && !std::isnan(*iter_y) && !std::isnan(*iter_z)) {
+            cloud_out.push_back(ufo::map::Point3(*iter_x, *iter_y, *iter_z));
+        }
+    }
 }
 
 void rosToUfo(sensor_msgs::msg::PointCloud2 const& cloud_in,
               ufo::map::PointCloudColor& cloud_out)
 {
-	cloud_out.reserve(cloud_in.data.size() / cloud_in.point_step);
+    cloud_out.reserve(cloud_in.data.size() / cloud_in.point_step);
 
-	bool has_x, has_y, has_z, has_rgb;
-	getFields(cloud_in, has_x, has_y, has_z, has_rgb);
+    bool has_x, has_y, has_z, has_rgb;
+    getFields(cloud_in, has_x, has_y, has_z, has_rgb);
 
-	if (!has_x || !has_y || !has_z) {
-		throw std::runtime_error("cloud_in missing one or more of the xyz fields");
-	}
+    if (!has_x || !has_y || !has_z) {
+        throw std::runtime_error("cloud_in missing one or more of the xyz fields");
+    }
 
-	sensor_msgs::PointCloud2ConstIterator<float> iter_x(cloud_in, "x");
-	sensor_msgs::PointCloud2ConstIterator<float> iter_y(cloud_in, "y");
-	sensor_msgs::PointCloud2ConstIterator<float> iter_z(cloud_in, "z");
+    sensor_msgs::PointCloud2ConstIterator<float> iter_x(cloud_in, "x");
+    sensor_msgs::PointCloud2ConstIterator<float> iter_y(cloud_in, "y");
+    sensor_msgs::PointCloud2ConstIterator<float> iter_z(cloud_in, "z");
 
-	if (has_rgb) {
-		sensor_msgs::PointCloud2ConstIterator<uint8_t> iter_r(cloud_in, "r");
-		sensor_msgs::PointCloud2ConstIterator<uint8_t> iter_g(cloud_in, "g");
-		sensor_msgs::PointCloud2ConstIterator<uint8_t> iter_b(cloud_in, "b");
+    if (has_rgb) {
+        sensor_msgs::PointCloud2ConstIterator<uint8_t> iter_r(cloud_in, "r");
+        sensor_msgs::PointCloud2ConstIterator<uint8_t> iter_g(cloud_in, "g");
+        sensor_msgs::PointCloud2ConstIterator<uint8_t> iter_b(cloud_in, "b");
 
-		for (; iter_x != iter_x.end();
-		     ++iter_x, ++iter_y, ++iter_z, ++iter_r, ++iter_g, ++iter_b) {
-			if (!std::isnan(*iter_x) && !std::isnan(*iter_y) && !std::isnan(*iter_z) &&
-			    !std::isnan(*iter_r) && !std::isnan(*iter_g) && !std::isnan(*iter_b)) {
-				cloud_out.push_back(
-				    ufo::map::Point3Color(*iter_x, *iter_y, *iter_z, *iter_r, *iter_g, *iter_b));
-			}
-		}
+        for (; iter_x != iter_x.end();
+                ++iter_x, ++iter_y, ++iter_z, ++iter_r, ++iter_g, ++iter_b) {
+            if (!std::isnan(*iter_x) && !std::isnan(*iter_y) && !std::isnan(*iter_z) &&
+                    !std::isnan(*iter_r) && !std::isnan(*iter_g) && !std::isnan(*iter_b)) {
+                cloud_out.push_back(
+                    ufo::map::Point3Color(*iter_x, *iter_y, *iter_z, *iter_r, *iter_g, *iter_b));
+            }
+        }
 
-	} else {
-		// TODO: Should this throw?
-		// throw std::runtime_error("cloud_in missing one or more of the rgb fields");
+    } else {
+        // TODO: Should this throw?
+        // throw std::runtime_error("cloud_in missing one or more of the rgb fields");
 
-		for (; iter_x != iter_x.end(); ++iter_x, ++iter_y, ++iter_z) {
-			if (!std::isnan(*iter_x) && !std::isnan(*iter_y) && !std::isnan(*iter_z)) {
-				cloud_out.push_back(ufo::map::Point3Color(*iter_x, *iter_y, *iter_z));
-			}
-		}
-	}
+        for (; iter_x != iter_x.end(); ++iter_x, ++iter_y, ++iter_z) {
+            if (!std::isnan(*iter_x) && !std::isnan(*iter_y) && !std::isnan(*iter_z)) {
+                cloud_out.push_back(ufo::map::Point3Color(*iter_x, *iter_y, *iter_z));
+            }
+        }
+    }
 }
 
 void ufoToRos(ufo::map::PointCloud const& cloud_in, sensor_msgs::msg::PointCloud2& cloud_out)
 {
-	bool has_x, has_y, has_z, has_rgb;
-	getFields(cloud_out, has_x, has_y, has_z, has_rgb);
+    bool has_x, has_y, has_z, has_rgb;
+    getFields(cloud_out, has_x, has_y, has_z, has_rgb);
 
-	sensor_msgs::PointCloud2Modifier cloud_out_modifier(cloud_out);
-	cloud_out_modifier.setPointCloud2FieldsByString(1, "xyz");
-	cloud_out_modifier.resize(cloud_in.size());
+    sensor_msgs::PointCloud2Modifier cloud_out_modifier(cloud_out);
+    cloud_out_modifier.setPointCloud2FieldsByString(1, "xyz");
+    cloud_out_modifier.resize(cloud_in.size());
 
-	sensor_msgs::PointCloud2Iterator<float> iter_x(cloud_out, "x");
-	sensor_msgs::PointCloud2Iterator<float> iter_y(cloud_out, "y");
-	sensor_msgs::PointCloud2Iterator<float> iter_z(cloud_out, "z");
+    sensor_msgs::PointCloud2Iterator<float> iter_x(cloud_out, "x");
+    sensor_msgs::PointCloud2Iterator<float> iter_y(cloud_out, "y");
+    sensor_msgs::PointCloud2Iterator<float> iter_z(cloud_out, "z");
 
-	for (size_t i = 0; i < cloud_in.size(); ++i, ++iter_x, ++iter_y, ++iter_z) {
-		*iter_x = cloud_in[i][0];
-		*iter_y = cloud_in[i][1];
-		*iter_z = cloud_in[i][2];
-	}
+    for (size_t i = 0; i < cloud_in.size(); ++i, ++iter_x, ++iter_y, ++iter_z) {
+        *iter_x = cloud_in[i][0];
+        *iter_y = cloud_in[i][1];
+        *iter_z = cloud_in[i][2];
+    }
 }
 
 void ufoToRos(ufo::map::PointCloudColor const& cloud_in,
               sensor_msgs::msg::PointCloud2& cloud_out)
 {
-	bool has_x, has_y, has_z, has_rgb;
-	getFields(cloud_out, has_x, has_y, has_z, has_rgb);
+    bool has_x, has_y, has_z, has_rgb;
+    getFields(cloud_out, has_x, has_y, has_z, has_rgb);
 
-	sensor_msgs::PointCloud2Modifier cloud_out_modifier(cloud_out);
-	cloud_out_modifier.setPointCloud2FieldsByString(2, "xyz", "rgb");
-	cloud_out_modifier.resize(cloud_in.size());
+    sensor_msgs::PointCloud2Modifier cloud_out_modifier(cloud_out);
+    cloud_out_modifier.setPointCloud2FieldsByString(2, "xyz", "rgb");
+    cloud_out_modifier.resize(cloud_in.size());
 
-	sensor_msgs::PointCloud2Iterator<float> iter_x(cloud_out, "x");
-	sensor_msgs::PointCloud2Iterator<float> iter_y(cloud_out, "y");
-	sensor_msgs::PointCloud2Iterator<float> iter_z(cloud_out, "z");
-	sensor_msgs::PointCloud2Iterator<uint8_t> iter_r(cloud_out, "r");
-	sensor_msgs::PointCloud2Iterator<uint8_t> iter_g(cloud_out, "g");
-	sensor_msgs::PointCloud2Iterator<uint8_t> iter_b(cloud_out, "b");
+    sensor_msgs::PointCloud2Iterator<float> iter_x(cloud_out, "x");
+    sensor_msgs::PointCloud2Iterator<float> iter_y(cloud_out, "y");
+    sensor_msgs::PointCloud2Iterator<float> iter_z(cloud_out, "z");
+    sensor_msgs::PointCloud2Iterator<uint8_t> iter_r(cloud_out, "r");
+    sensor_msgs::PointCloud2Iterator<uint8_t> iter_g(cloud_out, "g");
+    sensor_msgs::PointCloud2Iterator<uint8_t> iter_b(cloud_out, "b");
 
-	for (size_t i = 0; i < cloud_in.size();
-	     ++i, ++iter_x, ++iter_y, ++iter_z, ++iter_r, ++iter_g, ++iter_b) {
-		*iter_x = cloud_in[i][0];
-		*iter_y = cloud_in[i][1];
-		*iter_z = cloud_in[i][2];
-		*iter_r = cloud_in[i].getColor().r;
-		*iter_g = cloud_in[i].getColor().g;
-		*iter_b = cloud_in[i].getColor().b;
-	}
+    for (size_t i = 0; i < cloud_in.size();
+            ++i, ++iter_x, ++iter_y, ++iter_z, ++iter_r, ++iter_g, ++iter_b) {
+        *iter_x = cloud_in[i][0];
+        *iter_y = cloud_in[i][1];
+        *iter_z = cloud_in[i][2];
+        *iter_r = cloud_in[i].getColor().r;
+        *iter_g = cloud_in[i].getColor().g;
+        *iter_b = cloud_in[i].getColor().b;
+    }
 }
 
 // Vector3/Point
 
 void rosToUfo(geometry_msgs::msg::Point const& point_in, ufo::math::Vector3& point_out)
 {
-	point_out.x() = point_in.x;
-	point_out.y() = point_in.y;
-	point_out.z() = point_in.z;
+    point_out.x() = point_in.x;
+    point_out.y() = point_in.y;
+    point_out.z() = point_in.z;
 }
 
 void rosToUfo(geometry_msgs::msg::Vector3 const& point_in, ufo::math::Vector3& point_out)
 {
-	point_out.x() = point_in.x;
-	point_out.y() = point_in.y;
-	point_out.z() = point_in.z;
+    point_out.x() = point_in.x;
+    point_out.y() = point_in.y;
+    point_out.z() = point_in.z;
 }
 
 ufo::math::Vector3 rosToUfo(geometry_msgs::msg::Point const& point)
 {
-	return ufo::math::Vector3(point.x, point.y, point.z);
+    return ufo::math::Vector3(point.x, point.y, point.z);
 }
 
 void ufoToRos(ufo::math::Vector3 const& point_in, geometry_msgs::msg::Point& point_out)
 {
-	point_out.x = point_in.x();
-	point_out.y = point_in.y();
-	point_out.z = point_in.z();
+    point_out.x = point_in.x();
+    point_out.y = point_in.y();
+    point_out.z = point_in.z();
 }
 
 void ufoToRos(ufo::math::Vector3 const& point_in, geometry_msgs::msg::Vector3& point_out)
 {
-	point_out.x = point_in.x();
-	point_out.y = point_in.y();
-	point_out.z = point_in.z();
+    point_out.x = point_in.x();
+    point_out.y = point_in.y();
+    point_out.z = point_in.z();
 }
 
 geometry_msgs::msg::Point ufoToRos(ufo::math::Vector3 const& point)
 {
-	geometry_msgs::msg::Point point_out;
-	ufoToRos(point, point_out);
-	return point_out;
+    geometry_msgs::msg::Point point_out;
+    ufoToRos(point, point_out);
+    return point_out;
 }
 
 // Quaternion
 void rosToUfo(geometry_msgs::msg::Quaternion const& quaternion_in,
               ufo::math::Quaternion& quaternion_out)
 {
-	quaternion_out.x() = quaternion_in.x;
-	quaternion_out.y() = quaternion_in.y;
-	quaternion_out.z() = quaternion_in.z;
-	quaternion_out.w() = quaternion_in.w;
+    quaternion_out.x() = quaternion_in.x;
+    quaternion_out.y() = quaternion_in.y;
+    quaternion_out.z() = quaternion_in.z;
+    quaternion_out.w() = quaternion_in.w;
 }
 
 ufo::math::Quaternion rosToUfo(geometry_msgs::msg::Quaternion const& quaternion)
 {
-	return ufo::math::Quaternion(quaternion.w, quaternion.x, quaternion.y, quaternion.z);
+    return ufo::math::Quaternion(quaternion.w, quaternion.x, quaternion.y, quaternion.z);
 }
 
 void ufoToRos(ufo::math::Quaternion const& quaternion_in,
               geometry_msgs::msg::Quaternion& quaternion_out)
 {
-	quaternion_out.x = quaternion_in.x();
-	quaternion_out.y = quaternion_in.y();
-	quaternion_out.z = quaternion_in.z();
-	quaternion_out.w = quaternion_in.w();
+    quaternion_out.x = quaternion_in.x();
+    quaternion_out.y = quaternion_in.y();
+    quaternion_out.z = quaternion_in.z();
+    quaternion_out.w = quaternion_in.w();
 }
 
 geometry_msgs::msg::Quaternion ufoToRos(ufo::math::Quaternion const& quaternion)
 {
-	geometry_msgs::msg::Quaternion quaternion_out;
-	ufoToRos(quaternion, quaternion_out);
-	return quaternion_out;
+    geometry_msgs::msg::Quaternion quaternion_out;
+    ufoToRos(quaternion, quaternion_out);
+    return quaternion_out;
 }
 
 // Transforms
 void rosToUfo(geometry_msgs::msg::Transform const& transform_in,
               ufo::math::Pose6& transform_out)
 {
-	rosToUfo(transform_in.translation, transform_out.translation());
-	rosToUfo(transform_in.rotation, transform_out.rotation());
+    rosToUfo(transform_in.translation, transform_out.translation());
+    rosToUfo(transform_in.rotation, transform_out.rotation());
 }
 
 ufo::math::Pose6 rosToUfo(geometry_msgs::msg::Transform const& transform)
 {
-	return ufo::math::Pose6(transform.translation.x, transform.translation.y,
-	                        transform.translation.z, transform.rotation.w,
-	                        transform.rotation.x, transform.rotation.y,
-	                        transform.rotation.z);
+    return ufo::math::Pose6(transform.translation.x, transform.translation.y,
+                            transform.translation.z, transform.rotation.w,
+                            transform.rotation.x, transform.rotation.y,
+                            transform.rotation.z);
 }
 
 void ufoToRos(ufo::math::Pose6 const& transform_in,
               geometry_msgs::msg::Transform& transform_out)
 {
-	ufoToRos(transform_in.translation(), transform_out.translation);
-	ufoToRos(transform_in.rotation(), transform_out.rotation);
+    ufoToRos(transform_in.translation(), transform_out.translation);
+    ufoToRos(transform_in.rotation(), transform_out.rotation);
 }
 
 geometry_msgs::msg::Transform ufoToRos(ufo::math::Pose6 const& transform)
 {
-	geometry_msgs::msg::Transform transform_out;
-	ufoToRos(transform, transform_out);
-	return transform_out;
+    geometry_msgs::msg::Transform transform_out;
+    ufoToRos(transform, transform_out);
+    return transform_out;
 }
 
 }  // namespace ufomap_ros
