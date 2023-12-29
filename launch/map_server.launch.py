@@ -9,9 +9,8 @@ from launch import LaunchDescription
 def generate_launch_description():
     """ """
     ld = LaunchDescription()
-    config = os.path.join(
-        get_package_share_directory("navigation_lite"), "config", "sensors.yaml"
-    )
+    config = os.path.join(get_package_share_directory("navigation_lite"),
+                          "config", "sensors.yaml")
 
     node = Node(
         package="navigation_lite",
@@ -20,9 +19,15 @@ def generate_launch_description():
         output="screen",
         emulate_tty=True,
         parameters=[
-            {"map_frame": "map"},
-            {"map_topic": "nav_lite/map"},
-            {"pointcloud_topic": "sensors/pointcloud"},
+            {
+                "map_frame": "map"
+            },
+            {
+                "map_topic": "nav_lite/map"
+            },
+            {
+                "pointcloud_topic": "sensors/pointcloud"
+            },
         ],
     )
     ld.add_action(node)
